@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-28T16:30:00",
+  "updated": "2026-07-28T17:30:00",
   "modules": {
     "xiaohongshu": [
       {
@@ -9,7 +9,7 @@
         "link": "https://www.toutiao.com/article/7663899434438148644",
         "likes": 5200,
         "comments": 380,
-        "notes": "核心观点：珍珠自带柔光质感，不挑年龄不挑场合。8mm施华洛珍珠毛衣链通勤百搭，双层珍珠链自带叠戴效果，单珠款性价比高适合学生党。关键卖点：正圆无瑕疵、光泽持久、性价比高。"
+        "notes": "8mm施华洛珍珠毛衣链通勤百搭，双层珍珠链自带叠戴效果，单珠款性价比高适合学生党。核心：正圆无瑕疵、光泽持久。"
       },
       {
         "date": "2026-07-28",
@@ -18,7 +18,7 @@
         "link": "https://www.toutiao.com/article/7659802042193445385",
         "likes": 4300,
         "comments": 290,
-        "notes": "珍珠百搭天花板：穿白T恤搭细小米珠就有松弛感，配小礼服大点位珍珠优雅拉满。推荐类型：微笑链V型显脖子长、紫珍珠戒指清透显手白、紫水晶手串颜值高。几百块就能拿正圆极微瑕淡水珠。"
+        "notes": "穿白T恤搭细小米珠有松弛感，配小礼服大点位珍珠优雅拉满。推荐：微笑链V型显脖子长、紫珍珠戒指清透显手白。"
       },
       {
         "date": "2026-07-28",
@@ -27,7 +27,25 @@
         "link": "https://post.m.smzdm.com/p/a03292lw",
         "likes": 2800,
         "comments": 150,
-        "notes": "S925银碎银片经过手工捶打呈现不规则肌理，搭配7.5-8mm正圆淡水珍珠，一冷一暖清冷又温柔。链长可调节，纯银材质对敏感肌友好，百元出头性价比天花板，日常通勤约会都合适。"
+        "notes": "S925银碎银片手工捶打不规则肌理，搭配7.5-8mm正圆淡水珍珠，一冷一暖清冷温柔。链长可调节，百元出头性价比天花板。"
+      },
+      {
+        "date": "2026-07-28",
+        "title": "2026老钱风穿搭终极密码：珍珠才是真正的C位配饰",
+        "category": "综合珠宝",
+        "link": "https://k.sina.cn/article_7879849814_1d5acf75601902ag8s.html",
+        "likes": 6800,
+        "comments": 520,
+        "notes": "小红书#时尚老钱风累计2890万篇笔记。白衬衫+珍珠+金镯子三件套成顶流。珍珠不自带锋芒却一击封神，经得起时间打磨的审美哲学。"
+      },
+      {
+        "date": "2026-07-28",
+        "title": "2026春夏珍珠首饰流行趋势：叠戴成为核心设计语言",
+        "category": "珍珠项链",
+        "link": "https://www.toutiao.com/article/7649317707959108146",
+        "likes": 3500,
+        "comments": 200,
+        "notes": "小红书#珍珠手作#9.7亿浏览登顶。#巴洛克珍珠#7.9亿紧跟。TOP热卖：CIGALONG花丝珍珠戒指、白岚简约珍珠颈链，定价599-999元。设计师品牌凭故事化设计俘获年轻群体。"
       }
     ],
     "inspiration": [
@@ -36,7 +54,7 @@
         "platform": "抖音",
         "videoTitle": "撕页旅行日记：把转场变成叙事骨架",
         "videoLink": "https://neodrop.ai/zh-cn/post/L6I7hVmN3Zc",
-        "coreAnalysis": "「沿虚线撕开我的旅行日记」成为抖音热门模板：封面页→撕开→地点画面→收束句，四格动作结构清晰。品牌可将「问题页」撕开成「解决页」，产品做系列内容。关键不是纸张纹理特效，而是里面必须有新信息页。",
+        "coreAnalysis": "封面页→撕开→地点画面→收束句，四格动作结构清晰。品牌可将「问题页」撕开成「解决页」，产品做系列内容。关键：里面必须有新信息页，不只是纸张纹理特效。",
         "tags": "视频剪辑,转场模板,内容创作,抖音热点"
       },
       {
@@ -44,7 +62,7 @@
         "platform": "小红书",
         "videoTitle": "撕纸转场+动态文字+AI指令Carousel教程",
         "videoLink": "https://neodrop.ai/post/TX5KIMGtdo0",
-        "coreAnalysis": "小红书热门形式：把一个剪辑效果拆成教程，把一次使用变成可保存的资料。AI指令清单把工作流做成可复制菜单。内容方向：N条指令×一个场景，降低参与门槛的同时增加收藏价值。",
+        "coreAnalysis": "把一个剪辑效果拆成教程，把一次使用变成可保存的资料。AI指令清单把工作流做成可复制菜单。N条指令×一个场景，降低参与门槛同时增加收藏价值。",
         "tags": "视频剪辑,AI指令,小红书教程,内容创作"
       },
       {
@@ -52,8 +70,24 @@
         "platform": "全平台",
         "videoTitle": "ChatCut：AI剪辑迎来Cursor时刻，说话就能剪视频",
         "videoLink": "https://www.toutiao.com/a7661841569296810502",
-        "coreAnalysis": "2026年7月10日Product Hunt日榜第一。核心创新：把视频剪辑从「拖拽时间轴」变成「说话」。自动移除填充词、错误开始和长暂停，自动添加字幕支持103种语言，做80%可修改的初版把控制权留给创作者。",
+        "coreAnalysis": "2026年7月10日Product Hunt日榜第一。核心创新：从「拖拽时间轴」变成「说话」。自动移除填充词、错误开始和长暂停，自动字幕支持103种语言。",
         "tags": "AI剪辑,视频工具,短视频制作,效率工具"
+      },
+      {
+        "date": "2026-07-28",
+        "platform": "抖音",
+        "videoTitle": "抖音爆款文案黄金公式：数字+痛点+反转三板斧",
+        "videoLink": "https://gg.jiajutu.com/jiaocheng/032413.html",
+        "coreAnalysis": "情绪共振点（0.3秒触发认同感）+信息缺口效应（半句话勾起好奇心）+场景化钩子（把抽象变可触摸）。核心公式：标题=数字+痛点+反转，正文=痛点放大镜→解决方案→情感共鸣。",
+        "tags": "文案写作,爆款公式,流量密码,标题技巧"
+      },
+      {
+        "date": "2026-07-28",
+        "platform": "抖音",
+        "videoTitle": "短视频「黄金3秒」钩子公式：完播率从15%飙升",
+        "videoLink": "http://woshizmt.cn/ganhuo/neirong/3249.html",
+        "coreAnalysis": "5种钩子：结果前置式（直接亮结果）、悬念式（制造信息差）、利益前置式（3秒内承诺价值）、身份代入式（点名目标人群）、反常识冲击式（颠覆认知）。实测收藏率提升67%。",
+        "tags": "短视频运营,完播率,钩子公式,流量增长"
       }
     ],
     "english": [
@@ -64,7 +98,7 @@
         "meaning": "v. 犯（罪、错误）；投入、致力于；承诺",
         "example": "He commits himself to studying English every day. 他每天致力于学英语。",
         "reviewStatus": "新学",
-        "quizQuestion": "commit oneself to后面接什么形式？",
+        "quizQuestion": "commit oneself to 后面接什么形式？",
         "quizAnswer": "接动名词(doing)，to是介词。正确：commit oneself to studying；错误：commit oneself to study"
       },
       {
@@ -81,11 +115,31 @@
         "date": "2026-07-28",
         "type": "句式",
         "content": "not...but... 不是……而是……（平行结构）",
-        "meaning": "前后结构保持完全平行，书面写作加分句式。Love does not consist in gazing at each other, but in looking outward together in the same direction. 爱不在于彼此对视，而是一同望向同一个远方。",
-        "example": "Success does not consist in wealth, but in inner peace.",
+        "meaning": "前后结构保持完全平行，书面写作加分句式。Love does not consist in gazing at each other, but in looking outward together in the same direction.",
+        "example": "Success does not consist in wealth, but in inner peace. 成功不在于财富，而在于内心的平静。",
         "reviewStatus": "新学",
         "quizQuestion": "用not...but...翻译：真正的幸福不在于拥有很多，而在于需要很少。",
         "quizAnswer": "True happiness does not consist in having much, but in needing little."
+      },
+      {
+        "date": "2026-07-28",
+        "type": "单词",
+        "content": "confront /kənˈfrʌnt/",
+        "meaning": "v. 面对、正视（困难或问题）；与……对峙",
+        "example": "You need to confront your fears instead of running away. 你需要直面恐惧而不是逃避。",
+        "reviewStatus": "新学",
+        "quizQuestion": "confront 的常见搭配有哪些？",
+        "quizAnswer": "confront a problem/challenge（面对问题/挑战）；confront sb with sth（拿某事与某人对质）；be confronted with（面临、遇到）"
+      },
+      {
+        "date": "2026-07-28",
+        "type": "语法",
+        "content": "虚拟语气：wish 接过去式表示对现在的虚拟",
+        "meaning": "wish + 主语 + 过去式 → 表示与现在事实相反的愿望（从句be动词统一用were）",
+        "example": "I wish I were fluent in English. 我希望我英语流利（实际上现在不流利）。I wish I had more free time. 我希望有更多空闲时间。",
+        "reviewStatus": "新学",
+        "quizQuestion": "翻译：我希望我知道答案。",
+        "quizAnswer": "I wish I knew the answer. 用knew（过去式）表示现在不知道。注意：不用know，也不用would know。"
       }
     ],
     "ai": [
@@ -93,25 +147,41 @@
         "date": "2026-07-28",
         "toolName": "Kimi",
         "updateTitle": "Kimi K3全新发布：2.8万亿参数旗舰开源模型",
-        "operationSteps": "1. 打开 Kimi 网页端或App（已自动升级K3模型）；2. 一次性上传多份PDF/文档（支持100万token上下文≈70万字）；3. 用自然语言提出分析需求，K3会结合全部资料统一回答；4. 支持图片理解，可直接上传截图中的表格进行识别。三个核心使用思路：批量文档分析、长文写作辅助、图片内容提取。",
-        "applicationNotes": "最大升级：100万token超长上下文大幅缓解AI失忆问题。可以一次性上传多份行业报告让AI结合全部资料分析，不需拆分上传。但提醒：上传杂乱无关文件仍会降低精准度。适合办公文档分析、论文研究、合同审查等场景。",
+        "operationSteps": "1.打开Kimi网页端或App（已自动升级K3模型）；2.一次性上传多份PDF/文档（100万token上下文≈70万字）；3.用自然语言提出分析需求；4.图片理解：直接上传截图识别表格。",
+        "applicationNotes": "最大升级：100万token超长上下文大幅缓解AI失忆。可一次性上传多份行业报告让AI结合全部资料分析。适合办公文档分析、论文研究、合同审查。",
         "link": "https://www.toutiao.com/article/7665965027409330740"
       },
       {
         "date": "2026-07-28",
         "toolName": "Gemini",
         "updateTitle": "NotebookLM改名Gemini Notebook，升级为AI研究助理",
-        "operationSteps": "1. 用Google账号登录NotebookLM官网；2. 创建笔记本→导入资料（支持Google Docs/PDF/音档/网站/YouTube链接）；3. 左侧放资料、中间聊天问答、右侧Studio生成成果；4. 可一键生成简报（PPT可下载）、Podcast双人对话、心智图、学习卡、信息图表等。",
-        "applicationNotes": "2026年6月大升级：底层模型升至Gemini 3.5，对话自动保存，影片摘要支持中文。核心价值：只根据你上传的资料回答，每个答案标注引用来源，大幅降低AI幻觉。全球超3000万人使用，免费版功能已足够强大（每日50次对话）。",
+        "operationSteps": "1.Google账号登录；2.创建笔记本→导入资料（Google Docs/PDF/音档/网站/YouTube）；3.左侧放资料、中间聊天、右侧Studio生成成果；4.一键生成简报PPT、Podcast对话、心智图、学习卡。",
+        "applicationNotes": "底层模型升至Gemini 3.5，只根据你上传的资料回答，每个答案标注引用来源，大幅降低AI幻觉。全球超3000万人使用，免费版每日50次对话。",
         "link": "https://gretatsai.com/notebook-lm-guide"
       },
       {
         "date": "2026-07-28",
         "toolName": "GPT-5.6",
         "updateTitle": "GPT-5.6开发者实战指南：三档模型分层调度与Agent成本治理",
-        "operationSteps": "OpenAI推出Sol/Terra/Luna三档模型：Sol最强适合复杂推理、Terra平衡性价比、Luna轻量适合简单任务。核心策略：不要所有任务都用最强模型，按难度分层调度以控制成本。搭配Programmatic Tool Calling和Ultra multi-agent实现四个Agent并行工作。",
-        "applicationNotes": "关键原则：学会分层调度是Agent时代的核心工程能力。简单分类任务用Luna（成本最低），中等复杂度用Terra，高难度推理用Sol。使用multi-agent时需注意token消耗治理，避免爆炸。",
+        "operationSteps": "OpenAI推出Sol/Terra/Luna三档模型：Sol最强适合复杂推理、Terra平衡性价比、Luna轻量适合简单任务。核心策略：按难度分层调度以控制成本。搭配Programmatic Tool Calling和Ultra multi-agent实现四个Agent并行。",
+        "applicationNotes": "关键原则：分层调度是Agent时代的核心工程能力。简单任务用Luna（成本最低），中等用Terra，高难度用Sol。multi-agent需注意token消耗治理。",
         "link": "https://juejin.cn/post/7665194295950229514"
+      },
+      {
+        "date": "2026-07-28",
+        "toolName": "Lovable/Base44",
+        "updateTitle": "不会写代码也能做App：Vibe Coding工具推荐",
+        "operationSteps": "Lovable：输入需求描述→AI生成React Web App，界面预设精美，可无缝结合后端数据。Base44：Wix旗下全端工具→自然语言描述需求→同步生成前端+后端+数据库，适合快速验证商业点子。",
+        "applicationNotes": "Lovable付费$25/月起（点数控），建议第一次Prompt就把需求讲得详细以免点数超支。Base44适合不想管基础设施的创业者，全端生成效率极高。",
+        "link": "https://www.99aicreator.com/en/blog/ai-hot-topics-4/latest-ai-tools-in-july-2026-219"
+      },
+      {
+        "date": "2026-07-28",
+        "toolName": "Gemini 3.5 Flash",
+        "updateTitle": "Gemini 3.5 Flash 智能体计算机操作：AI直接操控浏览器",
+        "operationSteps": "1.在ai.google.dev获取API密钥；2.pip install google-genai；3.调用gemini-3.5-flash模型，设置computer_use工具（browser环境）；4.发送自然语言指令如「打开浏览器导航到目标网址」，AI自动推理并点击页面元素。",
+        "applicationNotes": "不需要单独的计算机操作模型ID，原生支持。模型查看渲染页面→推理点击元素→返回结构化操作指令。适合网页自动化、数据采集、测试等场景。",
+        "link": "https://therouter.ai/zh/blog/gemini-35-flash-agentic-computer-use-guide"
       }
     ],
     "craft": [
@@ -121,7 +191,7 @@
         "videoTitle": "立体钩针鳄鱼造型收纳小包（泡芙针零基础教程）",
         "videoLink": "http://bianzhirensheng.com/w/efd26664ab556963c8d42606f56ab146.html",
         "difficulty": "入门",
-        "tutorialNotes": "全身泡芙针还原鳄鱼鳞片肌理，立体四肢与圆眼造型，包口为鳄鱼嘴开合设计，自带手提挂绳。可收纳充电宝、数据线、口红、耳机等随身小物，童趣实用。非常适合新手入门练习泡芙针法。"
+        "tutorialNotes": "全身泡芙针还原鳄鱼鳞片肌理，立体四肢与圆眼造型，包口为鳄鱼嘴开合设计，自带手提挂绳。可收纳充电宝、数据线、口红、耳机等随身小物。非常适合新手入门练习泡芙针法。"
       },
       {
         "date": "2026-07-28",
@@ -129,7 +199,7 @@
         "videoTitle": "钩针彩虹花挂件编织教程（立体饱满零基础）",
         "videoLink": "http://bianzhirensheng.com/w/efd26664ab556963c8d42606f56ab146.html",
         "difficulty": "入门",
-        "tutorialNotes": "彩虹色花瓣立体饱满，色彩清新活泼。搭配金属挂扣与彩色挂绳，适配背包、手机等场景。兼具萌趣与治愈感的手作小物，能为日常穿搭增添鲜活氛围。只需要基础短针和引拔针即可完成。"
+        "tutorialNotes": "彩虹色花瓣立体饱满，色彩清新活泼。搭配金属挂扣与彩色挂绳，适配背包、手机等场景。只需要基础短针和引拔针即可完成，萌趣治愈的手作小物。"
       },
       {
         "date": "2026-07-28",
@@ -138,6 +208,22 @@
         "videoLink": "https://www.bianzhirensheng.com/w/a98184318f163f62b6eea4120f193356_6.html",
         "difficulty": "入门",
         "tutorialNotes": "素姐手作第51集教程。泡芙针法钩出草莓立体感，搭配绿色叶子，成品可爱精致可做钥匙扣或包挂。材料简单：红色和绿色毛线+填充棉即可。适合零基础练习泡芙针和环形起针。"
+      },
+      {
+        "date": "2026-07-28",
+        "craftType": "串珠",
+        "videoTitle": "串珠钩针项链：简易分步教程（含详细图解）",
+        "videoLink": "https://zhcn.actince.com/%E4%B8%B2%E7%8F%A0%E9%92%A9%E9%92%88%E9%A1%B9%E9%93%BE%EF%BC%9A%E5%88%86%E6%AD%A5%E6%95%99%E7%A8%8B/",
+        "difficulty": "简单",
+        "tutorialNotes": "材料：2.5mm钩针、10号精梳棉线、E号玻璃珠。步骤：先串珠→钩基础链→逐针钩入珠子。成品精致复古，可调节长度，非常适合串珠新手入门。每厘米约需2颗珠子+3针。"
+      },
+      {
+        "date": "2026-07-28",
+        "craftType": "钩针",
+        "videoTitle": "钩珠包包DIY教程：将珠子融入钩针编织",
+        "videoLink": "https://m.sohu.com/a/212487305_751652/",
+        "difficulty": "简单",
+        "tutorialNotes": "利用十字绣图案把珠子串在线上，每钩一针放一颗珠子。可做零钱包、手拿包、束口袋。先用单一颜色练习，熟练后按图纸串多色珠子。搭配口金配件更精致出街。"
       }
     ]
   }

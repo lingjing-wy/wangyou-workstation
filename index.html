@@ -462,6 +462,33 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 }
 .feed-save-btn:active{transform:scale(0.95)}
 .feed-save-btn.saved{background:var(--success);pointer-events:none}
+
+/* ====== 英语发音按钮 ====== */
+.speak-btn{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:3px 10px;
+  background:linear-gradient(135deg,#E8F4FD,#C5DFF5);
+  border-radius:12px;font-size:12px;color:var(--primary-dark);
+  cursor:pointer;transition:var(--transition);vertical-align:middle;
+  border:1px solid var(--primary-light);font-weight:600;
+  white-space:nowrap;
+}
+.speak-btn:hover{background:var(--primary-light)}
+.speak-btn:active{transform:scale(0.92)}
+.speak-btn.speaking{
+  animation:speakPulse 0.7s infinite;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;border-color:var(--primary-dark);
+}
+@keyframes speakPulse{0%,100%{box-shadow:0 0 0 0 rgba(91,155,213,0.5)}50%{box-shadow:0 0 0 8px rgba(91,155,213,0)}}
+.speak-btn-sm{
+  padding:2px 8px;font-size:10px;border-radius:10px;
+  display:inline-flex;align-items:center;gap:2px;
+  background:var(--primary-lighter);color:var(--primary-dark);
+  cursor:pointer;border:1px solid var(--primary-light);
+  transition:var(--transition);white-space:nowrap;
+}
+.speak-btn-sm:active{transform:scale(0.92);background:var(--primary);color:#fff}
 </style>
 </head>
 <body>
@@ -827,9 +854,18 @@ function renderCard(item, mod) {
   if (item.quizQuestion) {
     quizHtml = `
       <div style="margin-top:8px;padding:10px;background:linear-gradient(135deg,#F0F7FF,#E8F4FD);border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:12px;font-weight:600;color:var(--primary-dark);margin-bottom:4px">📋 考核题目</div>
+        <div style="font-size:12px;font-weight:600;color:var(--primary-dark);margin-bottom:4px;display:flex;align-items:center;gap:6px">
+          📋 考核题目
+          <button class="speak-btn-sm" onclick="event.stopPropagation();speakEnglish('${item.quizQuestion.replace(/'/g, "\\'")}',this)">🔊 朗读题目</button>
+        </div>
         <div style="font-size:13px;color:var(--text);margin-bottom:6px">${escapeHtml(item.quizQuestion)}</div>
-        <div class="quiz-answer" id="quiz_${item.id}">${escapeHtml(item.quizAnswer || '暂无答案')}</div>
+        <div class="quiz-answer" id="quiz_${item.id}">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <span style="font-size:12px;font-weight:600;color:var(--success)">✅ 答案</span>
+            <button class="speak-btn-sm" onclick="event.stopPropagation();speakEnglish('${(item.quizAnswer || '').replace(/'/g, "\\'")}',this)">🔊 朗读答案</button>
+          </div>
+          ${escapeHtml(item.quizAnswer || '暂无答案')}
+        </div>
         <button class="card-btn edit" style="margin-top:6px" onclick="toggleQuiz('${item.id}')">显示答案</button>
       </div>`;
   }
@@ -840,9 +876,9 @@ function renderCard(item, mod) {
         <span class="card-tag">${mod.icon} ${mod.name}</span>
         <span class="card-date">📅 ${formatDate(item.date)}</span>
       </div>
-      ${item.title ? `<div class="card-title">${escapeHtml(item.title)}</div>` : ''}
+      ${item.title ? `<div class="card-title">${escapeHtml(item.title)}${currentModule==='english' ? ` <button class="speak-btn" onclick="event.stopPropagation();speakEnglish('${item.title.replace(/'/g, "\\'")}',this)">🔊 点读</button>` : ''}</div>` : ''}
       ${item.videoTitle ? `<div class="card-title">${escapeHtml(item.videoTitle)}</div>` : ''}
-      ${item.content ? `<div class="card-title">${escapeHtml(item.content)}</div>` : ''}
+      ${item.content ? `<div class="card-title">${escapeHtml(item.content)}${currentModule==='english' ? ` <button class="speak-btn" onclick="event.stopPropagation();speakEnglish('${item.content.replace(/'/g, "\\'")}',this)">🔊 点读</button>` : ''}</div>` : ''}
       ${item.updateTitle ? `<div class="card-title">${escapeHtml(item.updateTitle)}</div>` : ''}
       <div class="card-body">${bodyHtml}</div>
       ${quizHtml}
@@ -1274,6 +1310,29 @@ function clearModuleData() {
   renderContent();
 }
 
+// ====== 英语发音 ======
+function speakEnglish(text, btnEl) {
+  if (!('speechSynthesis' in window)) { showToast('浏览器不支持发音'); return; }
+  window.speechSynthesis.cancel();
+  // 清理音标和中文，只保留英文
+  const clean = text
+    .replace(/\/[^/]*\//g, '')
+    .replace(/[\u4e00-\u9fff\uff00-\uffef\u3000-\u303f（）「」『』【】《》、，。！？；：""''—…·]+/g, ' ')
+    .replace(/[\(\)\[\]]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  if (!clean) { showToast('无可朗读的英文内容'); return; }
+  // 移除所有按钮的speaking状态
+  document.querySelectorAll('.speak-btn,.speak-btn-sm').forEach(b => b.classList.remove('speaking'));
+  if (btnEl) btnEl.classList.add('speaking');
+  const utter = new SpeechSynthesisUtterance(clean);
+  utter.lang = 'en-US';
+  utter.rate = 0.82;
+  utter.pitch = 1;
+  utter.onend = () => { if (btnEl) btnEl.classList.remove('speaking'); };
+  utter.onerror = () => { if (btnEl) btnEl.classList.remove('speaking'); };
+  window.speechSynthesis.speak(utter);
+}
+
 // ====== 每日推荐 Feed 加载 ======
 let dailyFeedData = null;
 let feedItemMap = {};
@@ -1336,10 +1395,17 @@ function renderFeedSection(moduleKey) {
     const category = item.category || item.platform || item.craftType || item.toolName || item.type || '';
     const likes = item.likes ? ('👍 ' + item.likes) : '';
     const difficulty = item.difficulty || '';
+    const isEnglish = moduleKey === 'english';
     
     html += '<div class="feed-card" id="feedCard_' + fid + '">';
-    html += '<div class="feed-card-title">' + escapeHtml(title) + '</div>';
-    if (desc) html += '<div class="feed-card-body">' + escapeHtml(desc.substring(0, 200)) + (desc.length > 200 ? '...' : '') + '</div>';
+    html += '<div class="feed-card-title">' + escapeHtml(title);
+    if (isEnglish && title) html += ' <button class="speak-btn-sm" onclick="event.stopPropagation();speakEnglish(\'' + title.replace(/'/g, "\\'") + '\',this)">🔊 跟读</button>';
+    html += '</div>';
+    if (desc) {
+      html += '<div class="feed-card-body">' + escapeHtml(desc.substring(0, 200)) + (desc.length > 200 ? '...' : '');
+      if (isEnglish && desc) html += ' <button class="speak-btn-sm" onclick="event.stopPropagation();speakEnglish(\'' + desc.substring(0, 200).replace(/'/g, "\\'") + '\',this)">🔊 朗读</button>';
+      html += '</div>';
+    }
     html += '<div class="feed-card-meta">';
     if (category) html += '<span class="feed-card-tag">' + escapeHtml(category) + '</span>';
     if (likes) html += '<span style="font-size:11px;color:var(--text-light)">' + likes + '</span>';
