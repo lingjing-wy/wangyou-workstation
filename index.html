@@ -564,6 +564,62 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 @media(min-width:768px){
   .detail-overlay{margin-left:var(--sidebar-w)}
 }
+
+/* ====== 安装引导横幅 ====== */
+.install-banner{
+  position:fixed;bottom:20px;left:16px;right:16px;
+  background:rgba(44,62,80,0.95);color:#fff;
+  border-radius:var(--radius);
+  padding:16px 16px 14px;
+  z-index:200;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
+  animation:slideUp 0.4s cubic-bezier(0.16,1,0.3,1);
+  max-width:420px;
+  margin-left:calc(var(--sidebar-w) + (100vw - var(--sidebar-w) - 420px)/2);
+}
+@keyframes slideUp{
+  from{transform:translateY(100px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+@media(max-width:500px){
+  .install-banner{margin-left:calc(var(--sidebar-w) + 8px);margin-right:8px;left:0;right:0}
+}
+.install-banner .ib-close{
+  position:absolute;top:8px;right:10px;
+  width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:rgba(255,255,255,0.8);
+  cursor:pointer;border:none;
+}
+.install-banner .ib-close:active{background:rgba(255,255,255,0.3)}
+.install-banner .ib-title{
+  font-size:15px;font-weight:700;margin-bottom:4px;
+  display:flex;align-items:center;gap:6px;
+}
+.install-banner .ib-steps{
+  font-size:13px;line-height:1.7;opacity:0.9;
+}
+.install-banner .ib-step{
+  display:flex;align-items:flex-start;gap:6px;margin-bottom:2px;
+}
+.install-banner .ib-step-num{
+  width:18px;height:18px;border-radius:50%;
+  background:var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;
+}
+.install-banner .ib-btn{
+  margin-top:10px;
+  background:#fff;color:var(--primary-dark);
+  border:none;padding:8px 20px;border-radius:20px;
+  font-size:13px;font-weight:600;
+  cursor:pointer;transition:0.2s;
+}
+.install-banner .ib-btn:active{transform:scale(0.95);background:#f0f0f0}
+.install-banner.hidden{display:none}
 </style>
 </head>
 <body>
@@ -605,6 +661,13 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 <!-- ====== 模态框 ====== -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal"></div>
+</div>
+
+<!-- ====== 安装引导横幅 ====== -->
+<div class="install-banner hidden" id="installBanner">
+  <button class="ib-close" onclick="dismissInstallBanner()">✕</button>
+  <div class="ib-title">📲 添加到手机桌面</div>
+  <div class="ib-steps" id="installSteps"></div>
 </div>
 
 <!-- ====== Toast ====== -->
@@ -1750,11 +1813,81 @@ document.addEventListener('touchend', (e) => {
   lastTouch = now;
 }, { passive: false });
 
+// ====== 安装引导 ======
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Android Chrome 可以弹出原生安装对话框
+  showInstallBanner(true);
+});
+
+function detectPlatform() {
+  const ua = navigator.userAgent;
+  if (/iPhone|iPad|iPod/.test(ua)) return 'ios';
+  if (/Android/.test(ua)) return 'android';
+  return 'other';
+}
+
+function showInstallBanner(hasNativePrompt) {
+  if (loadData('install_dismissed', '0') === '1') return;
+  const platform = detectPlatform();
+  if (platform === 'other') return;
+  
+  const banner = document.getElementById('installBanner');
+  const steps = document.getElementById('installSteps');
+  if (!banner || !steps) return;
+  
+  let html = '';
+  if (platform === 'android') {
+    if (hasNativePrompt && deferredPrompt) {
+      html = `
+        <div class="ib-step"><span class="ib-step-num">1</span>点击下方按钮安装</div>
+        <div class="ib-step">或点击右上角 ⋮ → <b>添加到主屏幕</b></div>
+        <button class="ib-btn" onclick="triggerInstall()">🚀 一键安装到桌面</button>`;
+    } else {
+      html = `
+        <div class="ib-step"><span class="ib-step-num">1</span>点右上角 <b>⋮</b></div>
+        <div class="ib-step"><span class="ib-step-num">2</span>选择 <b>添加到主屏幕</b></div>
+        <div class="ib-step"><span class="ib-step-num">3</span>点击 <b>添加</b> 即可 ✅</div>`;
+    }
+  } else {
+    html = `
+      <div class="ib-step"><span class="ib-step-num">1</span>点底部 <b>分享</b> 图标 ↷</div>
+      <div class="ib-step"><span class="ib-step-num">2</span>往下滑找到 <b>添加到主屏幕</b></div>
+      <div class="ib-step"><span class="ib-step-num">3</span>点右上角 <b>添加</b> 即可 ✅</div>`;
+  }
+  
+  steps.innerHTML = html;
+  banner.classList.remove('hidden');
+  // 10秒后自动消失
+  setTimeout(() => { banner.classList.add('hidden'); }, 15000);
+}
+
+function triggerInstall() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r => {
+    if (r.outcome === 'accepted') {
+      document.getElementById('installBanner').classList.add('hidden');
+      saveData('install_dismissed', '1');
+    }
+    deferredPrompt = null;
+  });
+}
+
+function dismissInstallBanner() {
+  document.getElementById('installBanner').classList.add('hidden');
+  saveData('install_dismissed', '1');
+}
+
 // ====== 初始化 ======
 async function init() {
   await fetchDailyFeed();
   renderNav();
   renderContent();
+  // 安装引导（首次访问显示）
+  setTimeout(() => showInstallBanner(false), 1500);
   // 检查今日是否需要提醒
   const lastOpen = loadData('last_open', '');
   const today = todayStr();
