@@ -489,6 +489,81 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
   transition:var(--transition);white-space:nowrap;
 }
 .speak-btn-sm:active{transform:scale(0.92);background:var(--primary);color:#fff}
+
+/* ====== 文章详情视图 ====== */
+.detail-overlay{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  z-index:250;
+  display:none;
+  flex-direction:column;
+}
+.detail-overlay.show{display:flex}
+.detail-header{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  padding-top:calc(12px + env(safe-area-inset-top,0));
+  background:var(--bg-card);
+  box-shadow:0 2px 8px var(--shadow);
+  position:sticky;top:0;z-index:10;
+  border-bottom:1px solid var(--border);
+}
+.detail-back{
+  display:flex;align-items:center;gap:4px;
+  padding:8px 16px;
+  border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;
+  font-size:13px;font-weight:600;
+  white-space:nowrap;flex-shrink:0;
+  transition:var(--transition);
+}
+.detail-back:active{transform:scale(0.92)}
+.detail-header-title{
+  font-size:15px;font-weight:600;
+  flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:var(--text);
+}
+.detail-scroll{
+  flex:1;overflow-y:auto;
+  padding:16px 16px 100px;
+  padding-top:calc(16px + env(safe-area-inset-top,0));
+}
+.detail-section{
+  background:var(--bg-card);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:0 2px 8px var(--shadow);
+  border:1px solid var(--border);
+}
+.detail-meta-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;margin-bottom:14px;
+}
+.detail-field{margin-bottom:14px}
+.detail-field-label{
+  font-size:11px;font-weight:600;
+  color:var(--primary-dark);
+  margin-bottom:5px;
+  display:flex;align-items:center;gap:6px;
+}
+.detail-field-value{
+  font-size:14px;color:var(--text);
+  line-height:1.7;word-break:break-word;
+}
+.detail-field-value.detail-textarea{
+  background:var(--primary-lighter);
+  padding:12px;border-radius:var(--radius-sm);
+  line-height:1.8;white-space:pre-wrap;
+}
+.detail-actions{
+  display:flex;gap:10px;margin-top:8px;
+}
+@media(min-width:768px){
+  .detail-overlay{margin-left:var(--sidebar-w)}
+}
 </style>
 </head>
 <body>
@@ -516,6 +591,15 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 
   <!-- ====== 浮动添加按钮 ====== -->
   <button class="fab" id="fab" onclick="openAddModal()" style="display:none">+</button>
+</div>
+
+<!-- ====== 文章详情视图 ====== -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-header">
+    <button class="detail-back" onclick="closeDetail()">← 返回</button>
+    <span class="detail-header-title" id="detailTitle"></span>
+  </div>
+  <div class="detail-scroll" id="detailContent"></div>
 </div>
 
 <!-- ====== 模态框 ====== -->
@@ -608,6 +692,21 @@ const MODULES = {
       { key: 'videoLink', label: '视频链接', type: 'url', required: false },
       { key: 'difficulty', label: '难度', type: 'select', options: ['入门','简单','中等','进阶'], required: true },
       { key: 'tutorialNotes', label: '教程笔记', type: 'textarea', required: false }
+    ]
+  },
+  editing: {
+    name: '视频剪辑',
+    icon: '🎬',
+    desc: '剪辑配乐/文案/特效/技巧学习',
+    fields: [
+      { key: 'date', label: '日期', type: 'date', required: true },
+      { key: 'topic', label: '主题方向', type: 'select', options: ['配乐','文案','特效','剪辑技巧','转场','调色','字幕','综合'], required: true },
+      { key: 'title', label: '标题', type: 'text', required: true },
+      { key: 'content', label: '内容/步骤', type: 'textarea', required: true },
+      { key: 'videoLink', label: '视频链接', type: 'url', required: false },
+      { key: 'toolUsed', label: '使用工具', type: 'select', options: ['剪映','PR','AE','达芬奇','Final Cut','CapCut','其他'], required: false },
+      { key: 'difficulty', label: '难度', type: 'select', options: ['入门','简单','中等','进阶'], required: false },
+      { key: 'notes', label: '备注心得', type: 'textarea', required: false }
     ]
   }
 };
@@ -838,9 +937,10 @@ function renderCard(item, mod) {
     const val = item[f.key];
     if (!val && val !== 0) return;
     if (f.type === 'url' && val) {
-      bodyHtml += `<div class="field"><span class="field-label">${f.label}</span><a class="card-link" href="${escapeHtml(val)}" target="_blank">🔗 打开链接</a></div>`;
+      bodyHtml += `<div class="field"><span class="field-label">${f.label}</span><a class="card-link" href="${escapeHtml(val)}" target="_blank" onclick="event.stopPropagation()">🔗 打开链接</a></div>`;
     } else if (f.type === 'textarea') {
-      bodyHtml += `<div class="field"><span class="field-label">${f.label}</span><span class="field-value">${escapeHtml(val)}</span></div>`;
+      const displayVal = String(val).length > 100 ? String(val).substring(0, 100) + '...' : val;
+      bodyHtml += `<div class="field"><span class="field-label">${f.label}</span><span class="field-value">${escapeHtml(displayVal)}</span></div>`;
     } else if (f.key === 'reviewStatus') {
       const cls = val === '已掌握' ? 'mastered' : val === '复习中' ? 'reviewing' : 'new';
       bodyHtml += `<div class="field"><span class="field-label">${f.label}</span><span class="review-badge ${cls}">${escapeHtml(val)}</span></div>`;
@@ -853,7 +953,7 @@ function renderCard(item, mod) {
   let quizHtml = '';
   if (item.quizQuestion) {
     quizHtml = `
-      <div style="margin-top:8px;padding:10px;background:linear-gradient(135deg,#F0F7FF,#E8F4FD);border-radius:8px;border:1px solid var(--border)">
+      <div style="margin-top:8px;padding:10px;background:linear-gradient(135deg,#F0F7FF,#E8F4FD);border-radius:8px;border:1px solid var(--border)" onclick="event.stopPropagation()">
         <div style="font-size:12px;font-weight:600;color:var(--primary-dark);margin-bottom:4px;display:flex;align-items:center;gap:6px">
           📋 考核题目
           <button class="speak-btn-sm" onclick="event.stopPropagation();speakEnglish('${item.quizQuestion.replace(/'/g, "\\'")}',this)">🔊 朗读题目</button>
@@ -866,12 +966,12 @@ function renderCard(item, mod) {
           </div>
           ${escapeHtml(item.quizAnswer || '暂无答案')}
         </div>
-        <button class="card-btn edit" style="margin-top:6px" onclick="toggleQuiz('${item.id}')">显示答案</button>
+        <button class="card-btn edit" style="margin-top:6px" onclick="event.stopPropagation();toggleQuiz('${item.id}')">显示答案</button>
       </div>`;
   }
 
   return `
-    <div class="card ${currentModule === 'english' && item.quizQuestion ? 'quiz-card' : ''}">
+    <div class="card ${currentModule === 'english' && item.quizQuestion ? 'quiz-card' : ''}" onclick="openDetail('${item.id}')" style="cursor:pointer">
       <div class="card-header">
         <span class="card-tag">${mod.icon} ${mod.name}</span>
         <span class="card-date">📅 ${formatDate(item.date)}</span>
@@ -888,8 +988,8 @@ function renderCard(item, mod) {
           ${item.comments !== undefined && item.comments !== '' ? `<span>💬 ${item.comments || 0}</span>` : ''}
         </div>
         <div class="card-actions">
-          <button class="card-btn edit" onclick="openEditModal('${item.id}')">编辑</button>
-          <button class="card-btn delete" onclick="deleteItem('${item.id}')">删除</button>
+          <button class="card-btn edit" onclick="event.stopPropagation();openEditModal('${item.id}')">编辑</button>
+          <button class="card-btn delete" onclick="event.stopPropagation();deleteItem('${item.id}')">删除</button>
         </div>
       </div>
     </div>`;
@@ -911,6 +1011,172 @@ function toggleQuiz(id) {
   el.classList.toggle('show');
   const btn = el.nextElementSibling || el.parentNode.querySelector('button');
   if (btn) btn.textContent = el.classList.contains('show') ? '隐藏答案' : '显示答案';
+}
+
+// ====== 文章详情查看 ======
+function openDetail(id) {
+  const mod = getCurrentModuleDef();
+  if (!mod) return;
+  const data = getModuleData(currentModule);
+  const item = data.find(d => d.id === id);
+  if (!item) return;
+
+  const fields = mod.fields || getDefaultFields();
+  const titleText = item.title || item.videoTitle || item.content || item.updateTitle || '详情';
+
+  let html = '';
+
+  // 元信息行
+  html += '<div class="detail-section">';
+  html += '<div class="detail-meta-row">';
+  html += '<span class="card-tag">' + mod.icon + ' ' + escapeHtml(mod.name) + '</span>';
+  html += '<span class="card-date">📅 ' + formatDate(item.date) + '</span>';
+  html += '</div>';
+
+  // 大标题
+  const mainTitle = item.title || item.videoTitle || item.updateTitle || '';
+  if (mainTitle) {
+    html += '<div style="font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)">' + escapeHtml(mainTitle) + '</div>';
+  }
+  // 英语内容标题
+  if (item.content && currentModule === 'english') {
+    html += '<div style="font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)">' + escapeHtml(item.content);
+    html += ' <button class="speak-btn" onclick="speakEnglish(\'' + (item.content || '').replace(/'/g, "\\'") + '\',this)">🔊 点读</button>';
+    html += '</div>';
+  }
+
+  // 所有字段（排除已有大标题的）
+  fields.forEach(f => {
+    if (f.key === 'date') return;
+    if ((f.key === 'title' || f.key === 'videoTitle' || f.key === 'updateTitle') && mainTitle) return;
+    if (f.key === 'content' && currentModule === 'english') return;
+    const val = item[f.key];
+    if (!val && val !== 0) return;
+    html += '<div class="detail-field">';
+    html += '<div class="detail-field-label">' + escapeHtml(f.label) + '</div>';
+    if (f.type === 'url' && val) {
+      html += '<div class="detail-field-value"><a href="' + escapeHtml(val) + '" target="_blank" rel="noopener" class="card-link">🔗 打开链接</a></div>';
+    } else if (f.type === 'textarea') {
+      html += '<div class="detail-field-value detail-textarea">' + escapeHtml(val) + '</div>';
+    } else if (f.key === 'reviewStatus') {
+      const cls = val === '已掌握' ? 'mastered' : val === '复习中' ? 'reviewing' : 'new';
+      html += '<div class="detail-field-value"><span class="review-badge ' + cls + '">' + escapeHtml(val) + '</span></div>';
+    } else {
+      html += '<div class="detail-field-value">' + escapeHtml(val) + '</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // 英语考核区域
+  if (item.quizQuestion) {
+    html += '<div class="detail-section" style="background:linear-gradient(135deg,#F0F7FF,#E8F4FD);border:1.5px solid var(--primary-light)">';
+    html += '<div class="detail-field-label" style="margin-bottom:8px">📋 考核题目 <button class="speak-btn-sm" onclick="speakEnglish(\'' + (item.quizQuestion || '').replace(/'/g, "\\'") + '\',this)">🔊 朗读题目</button></div>';
+    html += '<div class="detail-field-value" style="margin-bottom:12px">' + escapeHtml(item.quizQuestion) + '</div>';
+    html += '<div class="detail-field-label" style="margin-bottom:6px">✅ 答案 <button class="speak-btn-sm" onclick="speakEnglish(\'' + (item.quizAnswer || '').replace(/'/g, "\\'") + '\',this)">🔊 朗读答案</button></div>';
+    html += '<div class="detail-field-value detail-textarea">' + escapeHtml(item.quizAnswer || '暂无答案') + '</div>';
+    html += '</div>';
+  }
+
+  // 统计数据
+  if (item.likes !== undefined && item.likes !== '') {
+    html += '<div class="detail-section" style="display:flex;gap:20px;justify-content:center">';
+    if (item.likes !== undefined && item.likes !== '') html += '<div style="text-align:center"><div style="font-size:22px">👍</div><div style="font-size:16px;font-weight:700;color:var(--primary-dark)">' + item.likes + '</div><div style="font-size:11px;color:var(--text-light)">点赞</div></div>';
+    if (item.comments !== undefined && item.comments !== '') html += '<div style="text-align:center"><div style="font-size:22px">💬</div><div style="font-size:16px;font-weight:700;color:var(--primary-dark)">' + item.comments + '</div><div style="font-size:11px;color:var(--text-light)">评论</div></div>';
+    html += '</div>';
+  }
+
+  // 操作按钮
+  html += '<div class="detail-actions">';
+  html += '<button class="btn btn-primary" onclick="closeDetail();openEditModal(\'' + id + '\')">✏️ 编辑</button>';
+  html += '<button class="btn btn-secondary" style="color:var(--danger);border:1px solid var(--danger)" onclick="closeDetail();deleteItem(\'' + id + '\')">🗑️ 删除</button>';
+  html += '</div>';
+
+  document.getElementById('detailTitle').textContent = titleText;
+  document.getElementById('detailContent').innerHTML = html;
+  document.getElementById('detailOverlay').classList.add('show');
+  document.getElementById('detailContent').scrollTop = 0;
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('show');
+}
+
+// ====== 每日推荐详情查看 ======
+function openFeedDetail(moduleKey, fid) {
+  if (!feedItemMap[moduleKey]) return;
+  const item = feedItemMap[moduleKey].find(it => it._fid === fid);
+  if (!item) return;
+  const mod = MODULES[moduleKey] || customModules.find(m => m.key === moduleKey);
+  if (!mod) return;
+  const fields = mod.fields || getDefaultFields();
+  const titleText = item.title || item.videoTitle || item.content || item.updateTitle || '详情';
+
+  let html = '';
+  html += '<div class="detail-section">';
+  html += '<div class="detail-meta-row">';
+  html += '<span class="card-tag">🔄 推荐 · ' + escapeHtml(mod.name) + '</span>';
+  html += '<span class="card-date">📅 ' + formatDate(item.date) + '</span>';
+  html += '</div>';
+
+  const mainTitle = item.title || item.videoTitle || item.updateTitle || '';
+  if (mainTitle) {
+    html += '<div style="font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px">' + escapeHtml(mainTitle) + '</div>';
+  }
+  if (item.content && moduleKey === 'english') {
+    html += '<div style="font-size:17px;font-weight:700;line-height:1.5;margin-bottom:10px">' + escapeHtml(item.content);
+    html += ' <button class="speak-btn" onclick="speakEnglish(\'' + (item.content || '').replace(/'/g, "\\'") + '\',this)">🔊 点读</button></div>';
+  }
+
+  fields.forEach(f => {
+    if (f.key === 'date') return;
+    if ((f.key === 'title' || f.key === 'videoTitle' || f.key === 'updateTitle') && mainTitle) return;
+    if (f.key === 'content' && moduleKey === 'english') return;
+    const val = item[f.key];
+    if (!val && val !== 0) return;
+    html += '<div class="detail-field">';
+    html += '<div class="detail-field-label">' + escapeHtml(f.label) + '</div>';
+    if (f.type === 'url' && val) {
+      html += '<div class="detail-field-value"><a href="' + escapeHtml(val) + '" target="_blank" rel="noopener" class="card-link">🔗 打开链接</a></div>';
+    } else if (f.type === 'textarea') {
+      html += '<div class="detail-field-value detail-textarea">' + escapeHtml(val) + '</div>';
+    } else if (f.key === 'reviewStatus') {
+      const cls = val === '已掌握' ? 'mastered' : val === '复习中' ? 'reviewing' : 'new';
+      html += '<div class="detail-field-value"><span class="review-badge ' + cls + '">' + escapeHtml(val) + '</span></div>';
+    } else {
+      html += '<div class="detail-field-value">' + escapeHtml(val) + '</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // 英语考核
+  if (item.quizQuestion) {
+    html += '<div class="detail-section" style="background:linear-gradient(135deg,#F0F7FF,#E8F4FD);border:1.5px solid var(--primary-light)">';
+    html += '<div class="detail-field-label" style="margin-bottom:8px">📋 考核题目 <button class="speak-btn-sm" onclick="speakEnglish(\'' + (item.quizQuestion || '').replace(/'/g, "\\'") + '\',this)">🔊 朗读</button></div>';
+    html += '<div class="detail-field-value" style="margin-bottom:12px">' + escapeHtml(item.quizQuestion) + '</div>';
+    html += '<div class="detail-field-label" style="margin-bottom:6px">✅ 答案 <button class="speak-btn-sm" onclick="speakEnglish(\'' + (item.quizAnswer || '').replace(/'/g, "\\'") + '\',this)">🔊 朗读</button></div>';
+    html += '<div class="detail-field-value detail-textarea">' + escapeHtml(item.quizAnswer || '暂无答案') + '</div>';
+    html += '</div>';
+  }
+
+  // 统计
+  if (item.likes !== undefined && item.likes !== '') {
+    html += '<div class="detail-section" style="display:flex;gap:20px;justify-content:center">';
+    html += '<div style="text-align:center"><div style="font-size:22px">👍</div><div style="font-size:16px;font-weight:700;color:var(--primary-dark)">' + item.likes + '</div><div style="font-size:11px;color:var(--text-light)">点赞</div></div>';
+    if (item.comments !== undefined && item.comments !== '') html += '<div style="text-align:center"><div style="font-size:22px">💬</div><div style="font-size:16px;font-weight:700;color:var(--primary-dark)">' + item.comments + '</div><div style="font-size:11px;color:var(--text-light)">评论</div></div>';
+    html += '</div>';
+  }
+
+  // 保存按钮
+  html += '<div class="detail-actions">';
+  html += '<button class="btn btn-primary" id="detailSaveBtn_' + fid + '" onclick="saveFeedItem(\'' + moduleKey + '\',\'' + fid + '\');closeDetail()">💾 保存到我的数据</button>';
+  html += '</div>';
+
+  document.getElementById('detailTitle').textContent = titleText;
+  document.getElementById('detailContent').innerHTML = html;
+  document.getElementById('detailOverlay').classList.add('show');
+  document.getElementById('detailContent').scrollTop = 0;
 }
 
 // ====== 仪表盘 ======
@@ -1397,7 +1663,7 @@ function renderFeedSection(moduleKey) {
     const difficulty = item.difficulty || '';
     const isEnglish = moduleKey === 'english';
     
-    html += '<div class="feed-card" id="feedCard_' + fid + '">';
+    html += '<div class="feed-card" id="feedCard_' + fid + '" onclick="openFeedDetail(\'' + moduleKey + '\',\'' + fid + '\')" style="cursor:pointer">';
     html += '<div class="feed-card-title">' + escapeHtml(title);
     if (isEnglish && title) html += ' <button class="speak-btn-sm" onclick="event.stopPropagation();speakEnglish(\'' + title.replace(/'/g, "\\'") + '\',this)">🔊 跟读</button>';
     html += '</div>';
@@ -1411,8 +1677,8 @@ function renderFeedSection(moduleKey) {
     if (likes) html += '<span style="font-size:11px;color:var(--text-light)">' + likes + '</span>';
     if (difficulty) html += '<span style="font-size:11px;color:var(--text-light)">' + escapeHtml(difficulty) + '</span>';
     html += '</div>';
-    if (link) html += '<a class="card-link" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">🔗 查看原文</a> ';
-    html += '<button class="feed-save-btn" id="saveBtn_' + fid + '" onclick="saveFeedItem(\'' + moduleKey + '\',\'' + fid + '\')">💾 保存到我的数据</button>';
+    if (link) html += '<a class="card-link" onclick="event.stopPropagation()" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">🔗 查看原文</a> ';
+    html += '<button class="feed-save-btn" id="saveBtn_' + fid + '" onclick="event.stopPropagation();saveFeedItem(\'' + moduleKey + '\',\'' + fid + '\')">💾 保存到我的数据</button>';
     html += '</div>';
   });
   
